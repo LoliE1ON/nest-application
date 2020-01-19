@@ -6,16 +6,14 @@ import {UserDto} from "./dto/user.dto";
 @Controller('user')
 export class UserController {
 
+    // Inject User Service
     constructor(private userService: UserService) {}
 
-    @Get()
-    getList(): Promise<IUser> {
-        return this.userService.find('5e21ae7a1c9d440000fa229f')
-    }
-
+    // Create new user
     @UsePipes(new ValidationPipe())
     @Post()
     createUser(@Body() user: UserDto) {
         return this.userService.createUser(user)
     }
+
 }

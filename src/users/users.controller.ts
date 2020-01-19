@@ -4,11 +4,12 @@ import { UserService } from "../user/user.service";
 @Controller('users')
 export class UsersController {
 
-    constructor(private userService: UserService) {
-    }
+    // Inject User Service from User Module
+    constructor(private userService: UserService) {}
 
+    // Get all users collection
     @Get('list')
-    getAllUsers() {
+    async getAllUsers() {
         return this.userService.getAll()
     }
 

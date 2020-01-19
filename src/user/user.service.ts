@@ -11,6 +11,7 @@ import { roleEnum } from "./emuns/role.emun";
 @Injectable()
 export class UserService {
 
+    // Inject User model
     constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
 
     // Create new user
@@ -31,11 +32,13 @@ export class UserService {
 
     }
 
+    // Find user by ID
     async find(id: string): Promise<IUser> {
         return await this.userModel.findById(id).exec()
     }
 
-    async getAll(): Promise<Object> {
+    // Get all users collection
+    async getAll(): Promise<UserDto[]> {
         return await this.userModel.find().exec()
     }
 }
