@@ -33,12 +33,36 @@ export class UserService {
     }
 
     // Find user by ID
-    async find(id: string): Promise<IUser> {
-        return await this.userModel.findById(id).exec()
+    async find(id: string): Promise<UserDto> {
+
+        try {
+            return await this.userModel.findById(id).exec()
+        }
+        catch (e) {
+            console.log(e)
+        }
+
     }
 
     // Get all users collection
     async getAll(): Promise<UserDto[]> {
-        return await this.userModel.find().exec()
+
+        try {
+
+            const users: UserDto[] = await this.userModel.find().exec()
+
+            // -_-
+            users.forEach((userDto) => {
+                userDto.password = null
+                userDto.session = null
+            })
+
+            return users
+
+        }
+        catch (e) {
+            console.log(e)
+        }
+
     }
 }
