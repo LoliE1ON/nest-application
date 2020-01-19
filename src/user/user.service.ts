@@ -35,4 +35,7 @@ export class UserService {
         return await this.userModel.findById(id).exec()
     }
 
+    async getAll(): Promise<Object> {
+        return await this.userModel.find().exec()
+    }
 }
