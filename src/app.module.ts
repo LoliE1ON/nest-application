@@ -19,8 +19,9 @@ const environment = process.env.NODE_ENV || 'development'
     MongooseModule.forRoot(
         process.env.MONGODB_CONNECTION,
         {
-          useNewUrlParser: true,
-          useUnifiedTopology: true
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true
         }
     ),
     UsersModule

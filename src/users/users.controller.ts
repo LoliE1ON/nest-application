@@ -1,5 +1,6 @@
-import {Controller, Get} from '@nestjs/common';
-import {UserService} from "../user/user.service";
+import { Controller, Get } from '@nestjs/common';
+import { UserService } from "../user/user.service";
+import { IUsersList } from './interfaces/users.list.interface'
 
 @Controller('users')
 export class UsersController {
@@ -9,7 +10,7 @@ export class UsersController {
 
     // Get all users collection
     @Get('list')
-    async getAllUsers(): Promise<object> {
+    async getAllUsers(): Promise<IUsersList> {
         return {
             users: await this.userService.getAll()
         }
