@@ -33,10 +33,10 @@ export class UserService {
     }
 
     // Find user by ID
-    async find(id: string): Promise<UserDto> {
+    async findOne(login: string): Promise<IUser> {
 
         try {
-            return await this.userModel.findById(id).exec();
+            return await this.userModel.findOne({login}).exec();
         } catch (e) {
             Logger.error(e);
         }
