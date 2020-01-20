@@ -1,13 +1,13 @@
-import {Injectable, Logger} from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from "@nestjs/mongoose";
+import {Injectable, Logger} from '@nestjs/common'
+import { Model } from 'mongoose'
+import { InjectModel } from '@nestjs/mongoose'
 import * as _ from 'lodash'
 import { MD5 } from 'crypto-js'
 
-import { IUser } from "./interfaces/user.interface";
+import { IUser } from './interfaces/user.interface'
 import { UserDto } from './dto/User.dto'
-import { rolesEnum } from "./emuns/roles.emun";
-import { UserPublicDto } from "./dto/UserPublic.dto";
+import { rolesEnum } from './emuns/roles.emun'
+import { UserPublicDto } from './dto/UserPublic.dto'
 
 @Injectable()
 export class UserService {
@@ -16,19 +16,18 @@ export class UserService {
     constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
 
     // Create new user
-    async createUser(UserDto: UserDto, role: rolesEnum = 0): Promise<IUser> {
+    async createUser(userDto: UserDto, role: rolesEnum = 0): Promise<IUser> {
 
         // Set a default role for user
-        UserDto.role = [role]
+        userDto.role = [role];
 
-        const hash = MD5("Password", UserDto.password)
-        const user = new this.userModel(_.assignIn(UserDto, { password: hash }))
+        const hash = MD5('Password', userDto.password);
+        const user = new this.userModel(_.assignIn(userDto, { password: hash }));
 
         try {
-            return await user.save()
-        }
-        catch (e) {
-            Logger.error(e)
+            return await user.save();
+        } catch (e) {
+            Logger.error(e);
         }
 
     }
@@ -37,10 +36,9 @@ export class UserService {
     async find(id: string): Promise<UserDto> {
 
         try {
-            return await this.userModel.findById(id).exec()
-        }
-        catch (e) {
-            Logger.error(e)
+            return await this.userModel.findById(id).exec();
+        } catch (e) {
+            Logger.error(e);
         }
 
     }
@@ -50,25 +48,23 @@ export class UserService {
 
         try {
 
-            const users: UserPublicDto[] = await this.userModel.find().select({ 'password': 0, 'session': 0 }).exec()
-            return users
+            const users: UserPublicDto[] = await this.userModel.find().select({ password: 0, session: 0 }).exec();
+            return users;
 
-        }
-        catch (e) {
-            Logger.error(e)
+        } catch (e) {
+            Logger.error(e);
         }
 
     }
 
     // Check if login exists
-    async existLogin(login: String): Promise<Boolean> {
+    async existLogin(login: string): Promise<boolean> {
 
         try {
-            const user: UserDto = await this.userModel.findOne({ 'login': login }).exec()
+            const user: UserDto = await this.userModel.findOne({ login }).exec();
             return !!user;
-        }
-        catch (e) {
-            Logger.error(e)
+        } catch (e) {
+            Logger.error(e);
         }
 
     }

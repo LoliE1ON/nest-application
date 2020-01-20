@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose'
-import { rolesEnum } from "../emuns/roles.emun";
+import { rolesEnum } from '../emuns/roles.emun'
 
 export const UserSchema = new mongoose.Schema({
     login: { type: String, required: true, unique: true },
