@@ -5,9 +5,9 @@ import * as _ from 'lodash'
 import { MD5 } from 'crypto-js'
 
 import { IUser } from "./interfaces/user.interface";
-import { UserDto } from './dto/user.dto'
-import { roleEnum } from "./emuns/role.emun";
-import { UserPublicDto } from "./dto/user.public.dto";
+import { UserDto } from './dto/User.dto'
+import { rolesEnum } from "./emuns/roles.emun";
+import { UserPublicDto } from "./dto/UserPublic.dto";
 
 @Injectable()
 export class UserService {
@@ -16,7 +16,7 @@ export class UserService {
     constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
 
     // Create new user
-    async createUser(UserDto: UserDto, role: roleEnum = 0): Promise<IUser> {
+    async createUser(UserDto: UserDto, role: rolesEnum = 0): Promise<IUser> {
 
         // Set a default role for user
         UserDto.role = [role]

@@ -1,5 +1,6 @@
-import {UserPublicDto} from "../../user/dto/user.public.dto";
+import {UserPublicDto} from "../../user/dto/UserPublic.dto";
 
 export interface IUsersList {
+    statusCode: Number
     users: UserPublicDto[]
 }

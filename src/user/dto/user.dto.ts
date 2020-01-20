@@ -1,5 +1,5 @@
 import { IsString, MaxLength } from "class-validator"
-import { roleEnum } from "../emuns/role.emun"
+import { rolesEnum } from "../emuns/roles.emun"
 
 export class UserDto {
 
@@ -15,6 +15,6 @@ export class UserDto {
     @MaxLength(20, {
         each: true
     })
-    role: Array<roleEnum>
+    role: Array<rolesEnum>
 
 }

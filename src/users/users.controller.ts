@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import {Controller, Get, HttpStatus} from '@nestjs/common';
 import { UserService } from "../user/user.service";
 import { IUsersList } from './interfaces/users.list.interface'
 
@@ -12,6 +12,7 @@ export class UsersController {
     @Get('list')
     async getAllUsers(): Promise<IUsersList> {
         return {
+            statusCode: HttpStatus.OK,
             users: await this.userService.getAll()
         }
     }
