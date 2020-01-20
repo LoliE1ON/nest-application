@@ -1,20 +1,20 @@
-import { IsString, MaxLength } from 'class-validator'
-import { rolesEnum } from '../emuns/roles.emun'
+import { IsString, MaxLength } from 'class-validator';
+import { rolesEnum } from '../emuns/roles.emun';
 
 export class UserDto {
 
     @IsString()
-    login: string
+    login: string;
 
     @IsString()
-    password: string
+    password: string;
 
     @IsString()
-    session: string
+    session: string;
 
     @MaxLength(20, {
-        each: true
+        each: true,
     })
-    role: rolesEnum[]
+    role: rolesEnum[];
 
 }

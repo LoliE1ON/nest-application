@@ -1,7 +1,7 @@
-import {Body, Controller, HttpStatus, Post, UsePipes, ValidationPipe, Logger } from '@nestjs/common'
-import {UserService} from './user.service'
-import {UserDto} from './dto/User.dto'
-import {UserLoginExist} from './exceptions/userLoginExist.exception'
+import {Body, Controller, HttpStatus, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {UserService} from './user.service';
+import {UserDto} from './dto/User.dto';
+import {UserLoginExist} from './exceptions/userLoginExist.exception';
 
 @Controller('user')
 export class UserController {

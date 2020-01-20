@@ -1,13 +1,13 @@
-import {Injectable, Logger} from '@nestjs/common'
-import { Model } from 'mongoose'
-import { InjectModel } from '@nestjs/mongoose'
-import * as _ from 'lodash'
-import { MD5 } from 'crypto-js'
+import {Injectable, Logger} from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import * as _ from 'lodash';
+import { MD5 } from 'crypto-js';
 
-import { IUser } from './interfaces/user.interface'
-import { UserDto } from './dto/User.dto'
-import { rolesEnum } from './emuns/roles.emun'
-import { UserPublicDto } from './dto/UserPublic.dto'
+import { IUser } from './interfaces/user.interface';
+import { UserDto } from './dto/User.dto';
+import { rolesEnum } from './emuns/roles.emun';
+import { UserPublicDto } from './dto/UserPublic.dto';
 
 @Injectable()
 export class UserService {

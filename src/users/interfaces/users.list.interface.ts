@@ -1,6 +1,6 @@
-import {UserPublicDto} from "../../user/dto/UserPublic.dto";
+import {UserPublicDto} from '../../user/dto/UserPublic.dto';
 
 export interface IUsersList {
-    statusCode: Number
-    users: UserPublicDto[]
+    readonly statusCode: number;
+    readonly users: UserPublicDto[];
 }
