@@ -59,4 +59,18 @@ export class UserService {
         }
 
     }
+
+    // Check if login exists
+    async existLogin(login: String): Promise<Boolean> {
+
+        try {
+            const user: UserDto = await this.userModel.findOne({ 'login': login }).exec()
+            return !!user;
+        }
+        catch (e) {
+            // -_-
+            console.log(e)
+        }
+
+    }
 }
