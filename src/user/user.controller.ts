@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpException, HttpStatus, Param, Post, UsePipes, ValidationPipe} from '@nestjs/common';
+import {Body, Controller, Get, HttpException, HttpStatus, Param, Post, UsePipes, ValidationPipe, Logger } from '@nestjs/common';
 import {UserService} from './user.service'
 import {UserDto} from "./dto/user.dto";
 
@@ -13,6 +13,14 @@ export class UserController {
     @Post()
     async createUser(@Body() user: UserDto) {
 
+        Logger.error('Error')
+
+        throw new HttpException({
+            status: HttpStatus.FORBIDDEN,
+            error: 'test',
+        }, 403);
+
+
         // Check login exist
         const checkLoginExist: Boolean = await this.userService.existLogin(user.login)
         if(checkLoginExist) {
@@ -25,6 +33,7 @@ export class UserController {
         // Create new user
         await this.userService.createUser(user)
         return {
+            status: HttpStatus.OK,
             message: 'You have successfully registered'
         }
     }

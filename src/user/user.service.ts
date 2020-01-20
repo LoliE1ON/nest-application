@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable, Logger} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from "@nestjs/mongoose";
 import * as _ from 'lodash'
@@ -28,7 +28,7 @@ export class UserService {
             return await user.save()
         }
         catch (e) {
-            console.log(e)
+            Logger.error(e)
         }
 
     }
@@ -40,7 +40,7 @@ export class UserService {
             return await this.userModel.findById(id).exec()
         }
         catch (e) {
-            console.log(e)
+            Logger.error(e)
         }
 
     }
@@ -55,7 +55,7 @@ export class UserService {
 
         }
         catch (e) {
-            console.log(e)
+            Logger.error(e)
         }
 
     }
@@ -68,8 +68,7 @@ export class UserService {
             return !!user;
         }
         catch (e) {
-            // -_-
-            console.log(e)
+            Logger.error(e)
         }
 
     }
