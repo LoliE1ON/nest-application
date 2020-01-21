@@ -7,7 +7,6 @@ import {AuthGuard} from '@nestjs/passport';
 @Controller('user')
 export class UserController {
 
-    // Inject User Service
     constructor(private userService: UserService) {}
 
     // Get user

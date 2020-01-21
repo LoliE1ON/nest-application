@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+/* tslint:disable */
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import { UserDto } from '../user/dto/user.dto';
+import { IUser } from '../user/interfaces/user.interface';
+import { AuthenticationError } from './exceptions/authenticationError.exception';
 
 @Injectable()
 export class AuthService {
@@ -10,16 +12,25 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async validateUser(login: string, pass: string): Promise<UserDto | null> {
-        const user: UserDto = await this.userService.findOne(login);
-        if (user && user.password === pass) {
-            return user;
+    // Check user login and password
+    async validateUser(login: string, password: string): Promise<IUser> {
+        try {
+            const user: IUser = await this.userService.findOne(login);
+            if (user && user.password === password) { return user; }
+
+            // If incorrect data
+            throw new AuthenticationError();
+        } catch (e) {
+            Logger.error(e);
         }
-        return null;
     }
 
-    async login(user: any) {
-        const payload = { login: user.login, id: user.userId };
+    // Create access token
+    async login(user: IUser) {
+        const payload = {
+            userId: user._id,
+            login: user.login,
+        };
         return {
             access_token: this.jwtService.sign(payload),
         };
