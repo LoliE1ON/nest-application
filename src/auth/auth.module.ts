@@ -5,13 +5,14 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
-import { ConfigService } from '@nestjs/config';
 import { TokenModule } from '../token/token.module';
+import { configModule } from '../configure.root';
+
 
 @Module({
   imports: [
     PassportModule,
-    ConfigService,
+    configModule,
     TokenModule,
     UserModule,
     JwtModule.register({

@@ -9,9 +9,6 @@ export class UserDto {
     @IsString()
     password: string;
 
-    @IsString()
-    session: string;
-
     @MaxLength(20, {
         each: true,
     })

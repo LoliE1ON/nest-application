@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {Injectable, InternalServerErrorException, Logger} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { IToken } from './interfaces/token.interface';
@@ -17,6 +17,7 @@ export class TokenService {
             return await token.save();
         } catch (e) {
             Logger.error(e);
+            throw new InternalServerErrorException();
         }
     }
 
@@ -26,6 +27,7 @@ export class TokenService {
             return await this.tokenModel.deleteOne({ userId, token });
         } catch (e) {
             Logger.error(e);
+            throw new InternalServerErrorException();
         }
     }
 
@@ -35,6 +37,7 @@ export class TokenService {
             return await this.tokenModel.exists({ userId, token });
         } catch (e) {
             Logger.error(e);
+            throw new InternalServerErrorException();
         }
     }
 

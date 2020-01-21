@@ -1,14 +1,17 @@
-/* tslint:disable */
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import * as moment from 'moment';
+
 import { UserService } from '../user/user.service';
 import { IUser } from '../user/interfaces/user.interface';
+import { UserDto } from '../user/dto/user.dto';
+
+import { Token } from '../token/types/token.type';
 import { TokenService } from '../token/token.service';
 import { CreateTokenDto } from '../token/dto/createToken.dto';
 import { IToken } from '../token/interfaces/token.interface';
-import { UserDto } from '../user/dto/user.dto';
-
-import { AuthenticationError } from './exceptions/authenticationError.exception';
+import {log} from 'util';
 
 @Injectable()
 export class AuthService {
@@ -16,21 +19,30 @@ export class AuthService {
         private readonly jwtService: JwtService,
         private readonly tokenService: TokenService,
         private readonly userService: UserService,
+        private readonly configService: ConfigService,
     ) {}
 
-    async signUp(user: UserDto): Promise<string> {
+    async signUp(user: UserDto): Promise<CreateTokenDto> {
 
+        // Create new user
         const createUser: IUser = await this.userService.create(user);
-        const generateToken: string = await this.generateToken({ userId: createUser._id });
+
+        // Generate new token
+        const generateToken: Token = await this.generateToken({ userId: createUser._id });
+
+        // Token end of life
+        const expiresIn = moment().add(2, 'd').toString();
+
+        // Prepare token data for save to db
         const createToken: CreateTokenDto = {
             userId: createUser._id,
             token: generateToken,
-            expiresIn: new Date(new Date().getTime()+(5*24*60*60*1000)).toString(),
+            expiresIn,
         };
 
-        const saveToken: IToken = await this.tokenService.create(createToken);
-        return saveToken.token;
-
+        // Save token to db
+        await this.tokenService.create(createToken);
+        return createToken;
     }
 
     async signIn(login: string, password: string): Promise<string> {
@@ -41,12 +53,12 @@ export class AuthService {
         return this.jwtService.sign(data);
     }
 
-    private async verifyToken(token): Promise<any> {
+    async verifyToken(token: Token): Promise<any> {
         try {
             const data = this.jwtService.verify(token);
-            const tokenExsist = this.tokenService.exists(data.userId, token);
+            const tokenExists = this.tokenService.exists(data.userId, token);
 
-            if (tokenExsist) {
+            if (tokenExists) {
                 return data;
             }
 
