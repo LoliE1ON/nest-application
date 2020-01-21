@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { TokenModule } from './token/token.module';
 
 const environment = process.env.NODE_ENV || 'development'
 
@@ -25,6 +26,7 @@ const environment = process.env.NODE_ENV || 'development'
         },
     ),
     UsersModule,
+    TokenModule,
   ],
 })
 export class AppModule {}

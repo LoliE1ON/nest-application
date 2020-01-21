@@ -16,7 +16,7 @@ export class UserService {
     constructor(@InjectModel('User') private readonly userModel: Model<IUser>) {}
 
     // Create new user
-    async createUser(userDto: UserDto, role: rolesEnum = 0): Promise<IUser> {
+    async create(userDto: UserDto, role: rolesEnum = 0): Promise<IUser> {
 
         // Set a default role for user
         userDto.role = [role];
