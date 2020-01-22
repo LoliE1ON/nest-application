@@ -7,7 +7,6 @@ import { MD5 } from 'crypto-js';
 import { IUser } from './interfaces/user.interface';
 import { UserDto } from './dto/User.dto';
 import { rolesEnum } from './emuns/roles.emun';
-import { UserPublicDto } from './dto/UserPublic.dto';
 
 @Injectable()
 export class UserService {
@@ -44,11 +43,11 @@ export class UserService {
     }
 
     // Get all users collection
-    async getAll(): Promise<UserPublicDto[]> {
+    async getAll(): Promise<UserDto[]> {
 
         try {
 
-            const users: UserPublicDto[] = await this.userModel.find().select({ password: 0, session: 0 }).exec();
+            const users: UserDto[] = await this.userModel.find().select({ password: 0, session: 0 }).exec();
             return users;
 
         } catch (e) {
