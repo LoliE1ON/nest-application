@@ -53,7 +53,7 @@ export class AuthService {
     }
 
     // Verification token
-    async verifyToken(token: Token): Promise<any> {
+    async verifyToken(token: Token): Promise<object> {
         try {
             const data = this.jwtService.verify(token);
             const tokenExists = this.tokenService.exists(data.userId, token);
