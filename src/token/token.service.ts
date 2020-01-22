@@ -10,7 +10,7 @@ export class TokenService {
     constructor(@InjectModel('Token') private readonly tokenModel: Model<IToken>) {
     }
 
-    // Save token
+    // Create new token
     async create(createTokenDto: CreateTokenDto): Promise<IToken> {
         try {
             const token = new this.tokenModel(createTokenDto);
