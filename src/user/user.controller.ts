@@ -9,18 +9,4 @@ import {MD5} from 'crypto-js';
 export class UserController {
 
     constructor(private userService: UserService) {}
-
-    @Get('test')
-    test() {
-        const hash = MD5('Password', '123');
-        return { hash };
-    }
-
-    // Get user
-    @UseGuards(AuthGuard('jwt'))
-    @Get(':login')
-    async getUser(@Param() params) {
-        return this.userService.findOne(params.login);
-    }
-
 }
