@@ -10,6 +10,8 @@ import {Token} from '../token/types/token.type';
 import {TokenService} from '../token/token.service';
 import {CreateTokenDto} from '../token/dto/createToken.dto';
 import {IToken} from '../token/interfaces/token.interface';
+import {UserAuthDto} from './dto/userAuth.dto';
+import {AuthenticationError} from './exceptions/authenticationError.exception';
 
 @Injectable()
 export class AuthService {
@@ -19,32 +21,40 @@ export class AuthService {
         private readonly userService: UserService,
     ) {}
 
-    // Sign up user
-    async signUp(user: UserDto): Promise<CreateTokenDto> {
-
-        // Create new user
+    // Register new user
+    async register(user: UserDto): Promise<IToken> {
         const createUser: IUser = await this.userService.create(user);
+        return await this.createToken(createUser);
+    }
 
+    // Login
+    async login(userAuth: UserAuthDto): Promise<IToken> {
+
+        const candidate: IUser = await this.userService.findOne(userAuth.login);
+        const passwordHash = require('crypto').createHash('md5').update(userAuth.password).digest('hex');
+        if (candidate.password && candidate.password === passwordHash) {
+            return await this.createToken(candidate);
+        }
+        throw new AuthenticationError();
+    }
+
+    // Generate new token, save to db
+    private async createToken(user: IUser): Promise<IToken> {
         // Generate new token
-        const generateToken: Token = await this.generateToken({ userId: createUser._id });
+        const generateToken: Token = await this.generateToken({ userId: user._id });
 
         // Token end of life
         const expiresIn = moment().add(2, 'd').toString();
 
         // Prepare token data for save to db
         const newToken: CreateTokenDto = {
-            userId: createUser._id,
+            userId: user._id,
             token: generateToken,
             expiresIn,
         };
 
         // Save token to db
-        await this.saveToken(newToken);
-        return newToken;
-    }
-
-    async signIn(login: string, password: string): Promise<string> {
-        return 'df';
+        return await this.saveToken(newToken);
     }
 
     // Generate new token
