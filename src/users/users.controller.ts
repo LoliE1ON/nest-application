@@ -1,18 +1,17 @@
-import {Controller, Get, HttpStatus} from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { IUsersList } from './interfaces/users.list.interface';
+import {Controller, Get, HttpStatus, UseGuards} from '@nestjs/common';
+import {UserService} from '../user/user.service';
+import {JwtAuthGuard} from '../auth/guards/jwtAuth.guard';
 
 @Controller('users')
 export class UsersController {
 
-    // Inject User Service from User Module
     constructor(private userService: UserService) {}
 
     // Get all users collection
+    @UseGuards(JwtAuthGuard)
     @Get('list')
-    async getAllUsers(): Promise<IUsersList> {
+    async list() {
         return {
-            statusCode: HttpStatus.OK,
             users: await this.userService.getAll(),
         };
     }

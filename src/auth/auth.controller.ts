@@ -7,7 +7,6 @@ import {UserAuthDto} from './dto/userAuth.dto';
 import {AuthenticationError} from './exceptions/authenticationError.exception';
 import {IToken} from '../token/interfaces/token.interface';
 import {ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse} from '@nestjs/swagger';
-import {JwtAuthGuard} from './guards/jwtAuth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -15,14 +14,6 @@ export class AuthController {
         private readonly authService: AuthService,
         private readonly userService: UserService,
     ) {}
-
-    @UseGuards(JwtAuthGuard)
-    @Get('test')
-    async test() {
-        return {
-            protected: true,
-        };
-    }
 
     // Auth user
     @ApiOkResponse({ description: 'You have successfully logged in.' })

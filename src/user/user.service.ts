@@ -15,48 +15,24 @@ export class UserService {
 
     // Create new user
     async create(userDto: UserDto, role: rolesEnum = 0): Promise<IUser> {
-        try {
-            const hash = require('crypto').createHash('md5').update(userDto.password).digest('hex');
-            const user = new this.userModel(_.assignIn(userDto, { password: hash, role: [role]}));
-            return await user.save();
-        } catch (e) {
-            Logger.error(e);
-            throw new InternalServerErrorException();
-        }
+        const hash = require('crypto').createHash('md5').update(userDto.password).digest('hex');
+        const user = new this.userModel(_.assignIn(userDto, { password: hash, role: [role]}));
+        return await user.save();
     }
 
     // Find user by ID
     async findOne(login: string): Promise<IUser> {
-        try {
-            return await this.userModel.findOne({login}).exec();
-        } catch (e) {
-            Logger.error(e);
-            throw new InternalServerErrorException();
-        }
+        return await this.userModel.findOne({login}).exec();
     }
 
     // Get all users collection
     async getAll(): Promise<UserDto[]> {
-
-        try {
-            return await this.userModel.find().select({ password: 0, session: 0 }).exec();
-        } catch (e) {
-            Logger.error(e);
-            throw new InternalServerErrorException();
-        }
-
+        return await this.userModel.find().select({ password: 0, session: 0 }).exec();
     }
 
     // Check if login exists
     async existLogin(login: string): Promise<boolean> {
-
-        try {
-            const user: UserDto = await this.userModel.findOne({ login }).exec();
-            return !!user;
-        } catch (e) {
-            Logger.error(e);
-            throw new InternalServerErrorException();
-        }
-
+        const user: UserDto = await this.userModel.findOne({ login }).exec();
+        return !!user;
     }
 }

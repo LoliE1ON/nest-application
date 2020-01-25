@@ -5,9 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TokenModule } from './token/token.module';
 import { configModule } from './configure.root';
-import {APP_GUARD} from '@nestjs/core';
-import {JwtAuthGuard} from './auth/guards/jwtAuth.guard';
-import {AuthService} from './auth/auth.service';
+import {APP_FILTER} from '@nestjs/core';
+import {AllExceptionsFilter} from './filters/allExceptions.filter';
 
 @Module({
     imports: [
@@ -24,6 +23,12 @@ import {AuthService} from './auth/auth.service';
         ),
         UsersModule,
         TokenModule,
+    ],
+    providers: [
+        {
+            provide: APP_FILTER,
+            useClass: AllExceptionsFilter,
+        },
     ],
     exports: [
         AuthModule,
