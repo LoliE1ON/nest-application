@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { IsDateString, IsString } from 'class-validator';
+import {IsNumber, IsString} from 'class-validator';
 
 export class CreateTokenDto {
 
@@ -9,6 +9,6 @@ export class CreateTokenDto {
     @IsString()
     readonly token: string;
 
-    @IsDateString()
-    readonly expiresIn: string;
+    @IsNumber()
+    readonly exp: number;
 }

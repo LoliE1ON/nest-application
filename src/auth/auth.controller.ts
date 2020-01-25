@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpStatus, Param, Post, Request, UsePipes, ValidationPipe} from '@nestjs/common';
+import {Body, Controller, Get, HttpStatus, Post, UseGuards, UsePipes, ValidationPipe} from '@nestjs/common';
 import {AuthService} from './auth.service';
 import {UserDto} from '../user/dto/user.dto';
 import {UserLoginExist} from '../user/exceptions/userLoginExist.exception';
@@ -6,15 +6,8 @@ import {UserService} from '../user/user.service';
 import {UserAuthDto} from './dto/userAuth.dto';
 import {AuthenticationError} from './exceptions/authenticationError.exception';
 import {IToken} from '../token/interfaces/token.interface';
-import {
-    ApiBadRequestResponse,
-    ApiBody,
-    ApiCreatedResponse,
-    ApiDefaultResponse,
-    ApiForbiddenResponse,
-    ApiOkResponse,
-    ApiResponse
-} from '@nestjs/swagger';
+import {ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse} from '@nestjs/swagger';
+import {JwtAuthGuard} from './guards/jwtAuth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -23,12 +16,21 @@ export class AuthController {
         private readonly userService: UserService,
     ) {}
 
-    // Auth
+    @UseGuards(JwtAuthGuard)
+    @Get('test')
+    async test() {
+        return {
+            protected: true,
+        };
+    }
+
+    // Auth user
     @ApiOkResponse({ description: 'You have successfully logged in.' })
     @ApiForbiddenResponse({ description: 'The login or password is incorrect.'})
     @ApiBody({ type: [UserAuthDto]})
     @UsePipes(new ValidationPipe())
     @Post('login')
+
     async login(@Body() userAuth: UserAuthDto) {
 
         // Validation auth data
@@ -39,10 +41,8 @@ export class AuthController {
                 message: `Hello there, ${userAuth.login}!`,
                 user: token,
             };
-        } else {
-            throw new AuthenticationError();
         }
-
+        throw new AuthenticationError();
     }
 
     // Create new user
