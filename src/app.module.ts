@@ -6,7 +6,7 @@ import { UsersModule } from './users/users.module';
 import { TokenModule } from './token/token.module';
 import { configModule } from './configure.root';
 import {APP_FILTER} from '@nestjs/core';
-import {AllExceptionsFilter} from './filters/allExceptions.filter';
+import {AllExceptionsFilter} from './common/filters/allExceptions.filter';
 
 @Module({
     imports: [
