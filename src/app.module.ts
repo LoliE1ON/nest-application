@@ -4,7 +4,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TokenModule } from './token/token.module';
-import { configModule } from './configure.root';
+import { configModule } from './common/configure';
 import {APP_FILTER} from '@nestjs/core';
 import {AllExceptionsFilter} from './common/filters/allExceptions.filter';
 
